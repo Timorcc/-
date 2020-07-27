@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8"/>
+	<title>分组列表</title>
+	<link rel="stylesheet" href="../static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}" media="all" />
+	<style>
+		.layui-table,.layui-table th{ text-align:center; }
+	</style>
+</head>
+<body>
+	<blockquote class="layui-elem-quote">
+		<!--<div class="layui-inline">-->
+		    <!--<div class="layui-input-inline">-->
+		    	<!--<input type="text"  placeholder="请输入分组名称" id="searchInp" class="layui-input search_input"/>-->
+		    <!--</div>-->
+		    <!--<a class="layui-btn search_btn search"><i class="layui-icon">&#xe615;</i>查询</a>-->
+		<!--</div>-->
+		<div class="layui-inline">
+			<button type="button" class="layui-btn layui-btn-normal tanchuang" id="add" data-method="addGroup"><i class="layui-icon">&#xe61f;</i>添加分组</button>
+		</div>
+		<!--<div class="layui-inline">-->
+			<!--<a class="layui-btn layui-btn-danger batchDel tanchuang" data-method="mulDel"><i class="layui-icon">&#xe640;</i> 批量删除</a>-->
+		<!--</div>-->
+	</blockquote>
+	<div class="layui-form">
+		<table class="layui-table">
+			<colgroup>
+				<col width="5%"/>
+				<col width="20%"/>
+				<col width="50%"/>
+				<col width="auto"/>
+			</colgroup>
+			<thead>
+			<tr>
+				<th><input type="checkbox" name="" lay-skin="primary"  lay-filter="allChoose" /></th>
+				<th>分组名称</th>
+				<th>分组描述</th>
+				<th>操作</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="docGroup:${docGroups}" th:id="${docGroup.id}">
+				<td><input type="checkbox" name="f"  lay-skin="primary" lay-filter='itemChoose' th:value="${docGroup.id}"/></td>
+				<td th:text="${docGroup.groupName}"></td>
+				<td th:text="${docGroup.description}"></td>
+				<td>
+					<a title="修改分组" data-method="editGroup" class="tanchuang"><i class="layui-icon">&#xe642;</i></a>
+					<a title="删除分组" data-method="delete" class="tanchuang"><i class="layui-icon">&#xe640;</i></a>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	<div id="page" style="text-align: center"></div>
+	<script type="text/javascript" src="../static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
+	<script type="text/javascript" th:inline="javascript">
+
+		// var count = [[${count}]]
+        // var currPage = [[${currentPage}]]
+		// var pagesize = [[${pagesize}]]
+
+		//启用所有需要的layui里的组件
+        layui.use(['form','jquery','laypage','layer','table'], function(){
+            var form = layui.form;
+			var $ = layui.jquery;
+            var laypage = layui.laypage;
+            var layer = layui.layer;
+
+            //分页
+            // laypage.render({
+            //     elem: 'page', //注意，这里的 page 是 ID，不用加 # 号
+            //     count:count,
+            //     limit:pagesize,
+            //     curr:currPage,
+            //     prev:'上一页',
+            //     next:'下一页',
+            //     layout:['prev', 'page', 'next'],
+            //     jump : function(obj, first) {
+            //         // var filename = $('#searchInp').val();
+            //         if (!first) {
+            //             var pindex=obj.curr;
+            //             /*<![CDATA[*/
+            //             window.location.href="doclist?page="+pindex;//跳转链接
+            //             /*]]>*/
+            //         }
+            //     }
+            // });
+
+            // //实现查询
+            // $('.search').click(function () {
+            //     var filename = $('#searchInp').val();
+            //    /* if (!filename || filename == ''){
+            //         layer.open({
+            //             title:'提示',
+            //             content:'请输入查询信息'
+            //         })
+			// 		return
+            //     }*/
+            //     /*<![CDATA[*/
+            //     window.location.href="/myfile/search?filename="+filename;
+            //     /*]]>*/
+            // });
+
+            //全选
+            form.on('checkbox(allChoose)', function(data){
+                var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+                child.each(function(index, item){
+                    item.checked = data.elem.checked;
+                });
+                form.render('checkbox');
+            });
+
+            //取消全选
+            form.on('checkbox(itemChoose)',function(data){
+                var sib = $(data.elem).parents('table').find('tbody input[type="checkbox"]:checked').length;
+                var total = $(data.elem).parents('table').find('tbody input[type="checkbox"]').length;
+                if(sib == total){
+                    $(data.elem).parents('table').find('thead input[type="checkbox"]').prop("checked",true);
+                    form.render();
+                }else{
+                    $(data.elem).parents('table').find('thead input[type="checkbox"]').prop("checked",false);
+                    form.render();
+                }
+            });
+
+            //设计弹出层
+            var active = {
+                //删除一个分组
+                delete: function(othis){
+                    var id=  $(othis).parent('td').parent('tr').attr('id');
+                    layer.open({
+                        type: 1
+                        ,title: false //不显示标题栏
+                        ,closeBtn: false
+                        ,area: '300px;'
+                        ,shade: 0.8
+                        ,id: 'LAY_layuipro'//设定一个id，防止重复弹出
+                        ,btn: ['确定', '取消']
+                        ,btnAlign: 'c'
+                        ,moveType: 1 //拖拽模式，0或者1
+                        ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;text-align: center">确定要删除吗?</div>'
+                        ,yes: function(index){
+                            layer.close(index);
+                            $.ajax({
+                                type: 'POST',
+                                url: 'doctor/group/delete',
+                                data: {id:id},
+                                dataType: 'json',
+                                success: function(data){
+                                    if(data.state){
+                                        $(othis).parent('td').parent('tr').remove();
+                                        layer.msg('已删除!',{icon:1,time:1000});
+                                    }else {
+                                        layer.msg('删除过程出现错误，请稍后重试!',{icon:1,time:1000});
+                                    }
+                                }
+                            });
+                        }
+                    });
+                },
+				//修改分组
+                editGroup: function(othis){
+                    var id = $(othis).parent('td').parent('tr').attr('id');
+                    // var name = $(othis).parent('td').parent('tr').children('.second').attr('value');
+                    layer.open({
+                        type: 2
+                        ,title: '修改分组'
+                        ,area: ['820px', '470px']
+                        ,shade: 0.8
+                        ,maxmin: true,
+                        /*<![CDATA[*/
+                        content: "group/list/edit?id="+id
+                        /*]]>*/
+                    });
+                },
+                //添加分组
+                addGroup: function(){
+                    layer.open({
+                        type: 2
+                        ,title: '修改分组'
+                        ,area: ['820px', '470px']
+                        ,shade: 0.8
+                        ,maxmin: true,
+                        /*<![CDATA[*/
+                        content: "group/list/add"
+                        /*]]>*/
+                    });
+                },
+            };
+
+            //启用弹出层
+            $('.tanchuang').on('click', function(){
+                var othis = $(this), method = othis.data('method');
+                active[method] ? active[method].call(this, othis) : '';
+            });
+
+
+        });
+
+
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <title>山东大学齐鲁医院后台管理系统</title>
+  <link rel="stylesheet" href="../static/layui/css/layui.css" media="all" th:href="@{/static/layui/css/layui.css}"/>
+  <link rel="stylesheet" href="../static/font-awesome/css/font-awesome.min.css" th:href="@{/static/font-awesome/css/font-awesome.min.css}" media="all" />
+  <link rel="stylesheet" href="../static/css/app.css" th:href="@{/static/css/app.css}" media="all" />
+  <link rel="stylesheet" href="../static/css/themes/default.css" th:href="@{/static/css/themes/default.css}" media="all" kit-skin="" id="skin"/>
+  <script src="../static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
+</head>
+
+<body class="kit-theme">
+<div class="layui-layout layui-layout-admin kit-layout-admin">
+  <div class="layui-header">
+    <div class="layui-logo">化疗科后台管理系统</div>
+    <div class="layui-logo kit-logo-mobile">K</div>
+    <ul class="layui-nav layui-layout-right kit-nav">
+      <!--<li class="layui-nav-item">-->
+        <!--<a href="javascript:;">-->
+          <!--<i class="layui-icon">&#xe63f;</i> 皮肤-->
+        <!--</a>-->
+        <!--<dl class="layui-nav-child skin">-->
+          <!--<dd><a href="javascript:;" data-skin="default" style="color:#393D49;"><i class="layui-icon">&#xe658;</i> 默认</a></dd>-->
+          <!--<dd><a href="javascript:;" data-skin="orange" style="color:#ff6700;"><i class="layui-icon">&#xe658;</i> 橘子橙</a></dd>-->
+          <!--<dd><a href="javascript:;" data-skin="green" style="color:#00a65a;"><i class="layui-icon">&#xe658;</i> 原谅绿</a></dd>-->
+          <!--<dd><a href="javascript:;" data-skin="pink" style="color:#FA6086;"><i class="layui-icon">&#xe658;</i> 少女粉</a></dd>-->
+          <!--<dd><a href="javascript:;" data-skin="blue.1" style="color:#00c0ef;"><i class="layui-icon">&#xe658;</i> 天空蓝</a></dd>-->
+          <!--<dd><a href="javascript:;" data-skin="red" style="color:#dd4b39;"><i class="layui-icon">&#xe658;</i> 枫叶红</a></dd>-->
+        <!--</dl>-->
+      <!--</li>-->
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <img src="../static/img/face.png" class="layui-nav-img"/> 欢迎您，<span th:text="${session.username}"></span>
+        </a>
+      </li>
+      <li class="layui-nav-item"><a href="logout"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a></li>
+    </ul>
+  </div>
+  <div class="layui-side layui-bg-black kit-side">
+    <div class="layui-side-scroll">
+      <div class="kit-side-fold"><i class="fa fa-navicon" aria-hidden="true"></i></div>
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree" lay-filter="kitNavbar" kit-navbar="">
+
+        <!--医生管理-->
+        <li class="layui-nav-item">
+          <a class="" href="javascript:;"><i class="layui-icon">&#xe612;</i><span> 医生管理</span></a>
+          <dl class="layui-nav-child">
+            <dd>
+              <a href="javascript:;" kit-target="" data-options="{url:'doclist',icon:'&#xe612;',title:'医生列表',id:'11'}">
+              <i class="layui-icon">&#xe612;</i><span> 医生列表</span></a>
+            </dd>
+            <dd>
+              <a href="javascript:;" kit-target="" data-options="{url:'docGroupList',icon:'&#xe613;',title:'分组管理',id:'12'}">
+              <i class="layui-icon">&#xe613;</i><span> 分组管理</span></a>
+            </dd>
+            <!--<dd>-->
+              <!--<a href="javascript:;" kit-target="" data-options="{url:'docGroupList',icon:'&#xe770;',title:'部门管理',id:'13'}">-->
+                <!--<i class="layui-icon">&#xe770;</i><span> 部门管理</span></a>-->
+            <!--</dd>-->
+            <!--<dd>-->
+              <!--<a href="javascript:;" kit-target="" data-options="{url:'docGroupList',icon:'&#xe66f;',title:'角色管理',id:'14'}">-->
+                <!--<i class="layui-icon">&#xe66f;</i><span> 角色管理</span></a>-->
+            <!--</dd>-->
+            <!--<dd>-->
+              <!--<a href="javascript:;" kit-target="" data-options="{url:'docGroupList',icon:'&#xe677;',title:'小程序用户管理',id:'15'}">-->
+                <!--<i class="layui-icon">&#xe677;</i><span> 小程序用户管理</span></a>-->
+            <!--</dd>-->
+          </dl>
+        </li>
+
+        <!--病人管理-->
+        <li class="layui-nav-item">
+          <a class="" href="javascript:;"><i class="layui-icon">&#xe770;</i><span> 病人管理</span></a>
+          <dl class="layui-nav-child">
+            <dd>
+              <a href="javascript:;" kit-target="" data-options="{url:'patlist/cure',icon:'&#xe66f;',title:'病人列表',id:'21'}">
+                <i class="layui-icon">&#xe66f;</i><span> 病人列表</span></a>
+            </dd>
+            <dd >
+              <a href="javascript:;" kit-target="" data-options="{url:'patlist/recovery',icon:'&#xe6af;',title:'痊愈病人',id:'22'}">
+                <i class="layui-icon">&#xe6af;</i><span> 痊愈病人</span></a>
+            </dd>
+            <dd >
+              <a href="javascript:;" kit-target="" data-options="{url:'patlist/dead',icon:'&#xe69c;',title:'失效病人',id:'23'}">
+                <i class="layui-icon">&#xe69c;</i><span> 失效病人</span></a>
+            </dd>
+            <!--<dd >-->
+              <!--<a href="javascript:;" kit-target="" data-options="{url:'patlist/dead',icon:'&#xe681;',title:'上传管理',id:'24'}">-->
+                <!--<i class="layui-icon">&#xe681;</i><span> 上传管理</span></a>-->
+            <!--</dd>-->
+            <!--<dd >-->
+              <!--<a href="javascript:;" kit-target="" data-options="{url:'patlist/dead',icon:'&#xe637;',title:'住院管理',id:'25'}">-->
+                <!--<i class="layui-icon">&#xe637;</i><span> 住院管理</span></a>-->
+            <!--</dd>-->
+            <!--<dd>-->
+              <!--<a href="javascript:;" kit-target="" data-options="{url:'docGroupList',icon:'&#xe677;',title:'小程序用户管理',id:'26'}">-->
+                <!--<i class="layui-icon">&#xe677;</i><span> 小程序用户管理</span></a>-->
+            <!--</dd>-->
+          </dl>
+        </li>
+
+        <!--管理员管理-->
+        <li class="layui-nav-item">
+          <a class="" href="javascript:;"><i class="layui-icon">&#xe716;</i><span> 管理员管理</span></a>
+          <dl class="layui-nav-child">
+            <dd th:if="${session.username} eq 'root'">
+              <a href="javascript:;" kit-target="" data-options="{url:'admin/list/show',icon:'&#xe66f;',title:'用户管理',id:'31'}">
+                <i class="layui-icon">&#xe66f;</i><span> 用户管理</span></a>
+            </dd>
+            <dd>
+              <a href="javascript:;" kit-target="" data-options="{url:'admin/passwd/show',icon:'&#xe673;',title:'密码修改',id:'32'}">
+                <i class="layui-icon">&#xe673;</i><span> 密码修改</span></a>
+            </dd>
+
+            <!--<dd>-->
+              <!--<a href="javascript:;" kit-target="" data-options="{url:'/role/roleList?pageName=roleList',icon:'&#xe612;',title:'角色管理',id:'33'}">-->
+                <!--<i class="layui-icon">&#xe612;</i><span> 角色管理</span></a>-->
+            <!--</dd>-->
+            <!--<dd>-->
+              <!--<a href="javascript:;" kit-target="" data-options="{url:'/permission/permissionList',icon:'&#xe614;',title:'权限管理',id:'34'}">-->
+                <!--<i class="layui-icon">&#xe614;</i><span> 权限管理</span></a>-->
+            <!--</dd>-->
+            <!--<dd>-->
+              <!--<a href="javascript:;" kit-target="" data-options="{url:'/permission/permissionList',icon:'&#xe655;',title:'附件管理',id:'35'}">-->
+                <!--<i class="layui-icon">&#xe655;</i><span> 附件管理</span></a>-->
+            <!--</dd>-->
+            <!--<dd>-->
+              <!--<a href="javascript:;" kit-target="" data-options="{url:'/permission/permissionList',icon:'&#xe63a;',title:'消息管理',id:'36'}">-->
+                <!--<i class="layui-icon">&#xe63a;</i><span> 消息管理</span></a>-->
+            <!--</dd>-->
+
+          </dl>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+  <div class="layui-body" id="container">
+    <!-- 内容主体区域 -->
+    <div style="padding: 15px;"><i class="layui-icon layui-anim layui-anim-rotate layui-anim-loop">&#xe63e;</i> 请稍等...</div>
+  </div>
+
+  <div class="layui-footer">
+    <!-- 底部固定区域 -->
+    <!--2017 &copy;-->
+    <!--<a href="http://kit.zhengjinfan.cn/">kit.zhengjinfan.cn/</a> MIT license-->
+  </div>
+</div>
+<!-- <script type="text/javascript">
+      var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+      document.write(unescape("%3Cspan id='cnzz_stat_icon_1264021086'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1264021086%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+  </script> -->
+
+<script type="text/javascript">
+    var message;
+    layui.config({
+        base: '../static/src/js/',
+        version: '1.0.1'
+    }).use(['app', 'message'], function() {
+        var app = layui.app,
+            $ = layui.jquery,
+            layer = layui.layer;
+
+        //将message设置为全局以便子页面调用
+        message = layui.message;
+        //主入口
+        app.set({
+            type: 'iframe'
+        }).init();
+        // $('#pay').on('click', function() {
+        //     layer.open({
+        //         title: false,
+        //         type: 1,
+        //         content: '<img src="/src/images/pay.png" />',
+        //         area: ['500px', '250px'],
+        //         shadeClose: true
+        //     });
+        // });
+        $('dl.skin > dd').on('click', function() {
+            var $that = $(this);
+            var skin = $that.children('a').data('skin');
+            switchSkin(skin);
+        });
+        var setSkin = function(value) {
+                layui.data('kit_skin', {
+                    key: 'skin',
+                    value: value
+                });
+            },
+            getSkinName = function() {
+                return layui.data('kit_skin').skin;
+            },
+            switchSkin = function(value) {
+                var _target = $('link[kit-skin]')[0];
+                _target.href = _target.href.substring(0, _target.href.lastIndexOf('/') + 1) + value + _target.href.substring(_target.href.lastIndexOf('.'));
+                setSkin(value);
+
+            },
+            initSkin = function() {
+                var skin = getSkinName();
+                switchSkin(skin === undefined ? 'default' : skin);
+            }();
+    });
+</script>
+</body>
+
+</html>
