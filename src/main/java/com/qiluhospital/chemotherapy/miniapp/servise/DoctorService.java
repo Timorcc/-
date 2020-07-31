@@ -56,4 +56,6 @@ public interface DoctorService {
     Doctor findDocById(Long docId);
 
     boolean freezePat(Long patId);
+
+    boolean setReadStatus(String bind);
 }

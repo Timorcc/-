@@ -25,4 +25,8 @@ public class PatReportView {
 
     private Double plt;//血小板计数（125-350）
 
+    private Integer readStatus;//医生阅读状态
+
+    private String bind;
+
 }

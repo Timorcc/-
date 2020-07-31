@@ -108,7 +108,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Map<String,Object> uploadReport(MultipartFile fileList, Long patId, double wbc, double neu, double hgb, double plt,String bind) {
+    public Map<String,Object> uploadReport(MultipartFile fileList, Long patId, double wbc, double neu, double hgb, double plt,String bind,int readStatus) {
         try {
             Map<String,Object> res = new HashMap<>();
             Patient patient = patientRepository.findOneById(patId);
@@ -123,6 +123,7 @@ public class PatientServiceImpl implements PatientService {
                     patReport.setPlt(plt);
                     patReport.setPatId(patId);
                     patReport.setBind(bind);
+                    patReport.setReadStatus(readStatus);
                     Date upDate = new Date();
                     patReport.setUploadDate(upDate);
                     boolean isNormal = false;
@@ -138,7 +139,9 @@ public class PatientServiceImpl implements PatientService {
                     patReport.setIsNormal(isNormal);
                     patReport = patReportRepository.save(patReport);
                 }
+
                 if (patReport!=null){
+
                     //上传文件到本地磁盘
                     String pathname = configBeanValue.imgPath;
                     String filename = fileList.getOriginalFilename();
@@ -146,10 +149,15 @@ public class PatientServiceImpl implements PatientService {
                     if(!dir.exists()){
                         dir.mkdirs();
                     }
+
                     String timeMillis = Long.toString(System.currentTimeMillis());//时间戳
+
                     String filepath = pathname+timeMillis+"_"+filename;
+
                     File serverFile = new File(filepath);
+
                     fileList.transferTo(serverFile);
+
                     //照片存入数据库
                     PatientUploadImg patientUploadImg = new PatientUploadImg();
                     patientUploadImg.setImgName(timeMillis+"_"+filename);
@@ -157,8 +165,11 @@ public class PatientServiceImpl implements PatientService {
                     patientUploadImg.setPatientId(patId);
                     patientUploadImg.setUploadDate(new Date());
                     patientUploadImg.setImgSize(fileList.getSize());
+
                     patientUploadImg.setReportId(patReport.getId());
+
                     patUplImgRepository.save(patientUploadImg);
+
                 }
                 res.put("msg",true);
             }else {
@@ -168,6 +179,7 @@ public class PatientServiceImpl implements PatientService {
             return res;
         }catch (Exception e){
             log.error(e.toString());
+            System.out.println("失败");
             return null;
         }
     }

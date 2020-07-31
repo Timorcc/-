@@ -11,12 +11,13 @@ import java.util.Map;
 
 public interface PatientService {
 
+
     String initPatUser(String code);
 
     Map<String,Object> bindPatient(String openid, String patName, String ideCard, String patCard, String telNumber, String docId,
                         String preDate,Long groupId) throws ParseException;
 
-    Map<String,Object> uploadReport(MultipartFile fileList, Long patId, double wbc, double neu, double hgb, double plt,String bind);
+    Map<String,Object> uploadReport(MultipartFile fileList, Long patId, double wbc, double neu, double hgb, double plt,String bind,int readStatus);
 
     List<Patient> findPatsByGroupId(String docOpenId);
 

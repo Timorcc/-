@@ -57,6 +57,9 @@ public class DoctorServiceImpl implements DoctorService {
     @Autowired
     private CommServiceImpl commService;
 
+    @Autowired
+    private UploadDateRepository uploadDateRepository;
+
     @Override
     public List<GroupAndDoctorView> findAllRealDoc() {
         try {
@@ -148,8 +151,16 @@ public class DoctorServiceImpl implements DoctorService {
                 patReportView.setPlt(patReport.getPlt());
                 patReportView.setNeu(patReport.getNeu());
                 patReportView.setWbc(patReport.getWbc());
+
+                patReportView.setReadStatus(patReport.getReadStatus());
+                patReportView.setBind(patReport.getBind());
                 patReportView.setUpDate(sdf.format(patReport.getUploadDate()));
+                System.out.println("=====");
+                System.out.println("patReport"+patReport);
+                System.out.println("patReport.getId()"+patReport.getId());
+                System.out.println("=====");
                 List<PatientUploadImg> patientUploadImgs = patUplImgRepository.findAllByReportId(patReport.getId());
+                System.out.println("patientUploadImgs=---=>"+patientUploadImgs);
                 if (patientUploadImgs !=null && patientUploadImgs.size()!=0){
                     PatientUploadImg patientUploadImg = patientUploadImgs.get(0);
                     Patient patient = patientRepository.findOneById(patientUploadImg.getPatientId());
@@ -296,6 +307,7 @@ public class DoctorServiceImpl implements DoctorService {
         try{
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Patient patient = patientRepository.findOneById(Long.valueOf(patId));
+            List<UploadDate> polyDate = uploadDateRepository.findByUserId(Long.valueOf(patId));
             if(patient!=null){
                 if (type.equals("visit")){
                     patient.setEstimatedVisitDate(sdf.parse(date));
@@ -304,6 +316,7 @@ public class DoctorServiceImpl implements DoctorService {
                     patient.setPainDate(sdf.parse(date));
                 }
                 if (type.equals("report")){
+
                     patient.setUploadDate(sdf.parse(date));
                 }
                 patientRepository.save(patient);
@@ -501,5 +514,19 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
 
+    @Override
+    public boolean setReadStatus(String bind) {
+        PatReport patReport = patReportRepository.findPatReportByBind(bind);
+        System.out.println("根据bind查询到的病人是：" +patReport);
+        if(patReport != null){
+//           patReportRepository.
+            patReport.setReadStatus(1);
+            patReportRepository.save(patReport);
+            System.out.println("修改后"+patReport);
+            return true;
+        }else{
+            return false;
+        }
 
+    }
 }

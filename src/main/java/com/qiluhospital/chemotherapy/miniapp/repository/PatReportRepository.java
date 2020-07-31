@@ -13,4 +13,8 @@ public interface PatReportRepository extends JpaRepository<PatReport,Long> {
     List<PatReport> findAllByPatIdAndIsNormal(Long patId, Boolean isNormal, Sort sort);
 
     PatReport findPatReportByBind(String bind);
+
+//    boolean save(PatReport patReport);
+
+
 }

@@ -30,6 +30,6 @@ public class PatReport {
 
     private String bind;//绑定图片标识
 
-
+    private Integer readStatus;//病人上传化验单之后，医生是否阅读。0未读，1已读。
 
 }

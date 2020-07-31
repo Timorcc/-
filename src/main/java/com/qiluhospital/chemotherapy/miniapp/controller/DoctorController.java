@@ -201,6 +201,12 @@ public class DoctorController {
         String patId = request.getParameter("patientId");
         String date = request.getParameter("date");
         String type = request.getParameter("type");
+        System.out.println("***************");
+        System.out.println("openid----"+openid);
+        System.out.println("patId----"+patId);
+        System.out.println("date----"+date);
+        System.out.println("type----"+type);
+        System.out.println("***************");
         boolean isSucc = doctorService.modifyPatDate(openid,patId,date,type);
         map.put("msg",isSucc);
         return map;
@@ -237,6 +243,16 @@ public class DoctorController {
         return map;
     }
 
+    //医生是否阅读病人上传病情
+    @RequestMapping(value = "doctor/changeStatus",method = RequestMethod.POST)
+    public boolean changeStatus(HttpServletRequest request){
+        String bind = request.getParameter("bind");
+        System.out.println("&&&&&&&&&&&&");
+        System.out.println(bind);
+        System.out.println("&&&&&&&&&&&&");
+        boolean res =  doctorService.setReadStatus(bind);
+        return res;
+    }
 
 
 
