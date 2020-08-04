@@ -56,9 +56,6 @@ public class PatientController {
     /*病人上传体检报告*/
     @RequestMapping(value = "patient/upload/report", method = RequestMethod.POST)
     public Map uploadFile(@RequestParam(name = "img") MultipartFile files,HttpServletRequest request) {
-
-
-
         String patId = request.getParameter("patId");
         String wbc = request.getParameter("wbc");
         String neu = request.getParameter("neu");
@@ -69,6 +66,7 @@ public class PatientController {
         Map<String,Object> msg = patientService.uploadReport(files, Long.valueOf(patId),Double.parseDouble(wbc),
                 Double.parseDouble(neu),Double.parseDouble(hgb),Double.parseDouble(plt),bind,Integer.parseInt(readStatus));
         System.out.println("msg===>"+msg);
+
         return msg;
     }
 

@@ -8,6 +8,7 @@ import com.qiluhospital.chemotherapy.miniapp.enums.PatState;
 import com.qiluhospital.chemotherapy.miniapp.repository.*;
 import com.qiluhospital.chemotherapy.miniapp.servise.PatientService;
 import com.qiluhospital.chemotherapy.miniapp.view.PatTodayPlanView;
+import com.qiluhospital.chemotherapy.util.MessageUtils;
 import com.qiluhospital.chemotherapy.util.MiniappUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,9 +140,7 @@ public class PatientServiceImpl implements PatientService {
                     patReport.setIsNormal(isNormal);
                     patReport = patReportRepository.save(patReport);
                 }
-
                 if (patReport!=null){
-
                     //上传文件到本地磁盘
                     String pathname = configBeanValue.imgPath;
                     String filename = fileList.getOriginalFilename();
@@ -149,15 +148,10 @@ public class PatientServiceImpl implements PatientService {
                     if(!dir.exists()){
                         dir.mkdirs();
                     }
-
                     String timeMillis = Long.toString(System.currentTimeMillis());//时间戳
-
                     String filepath = pathname+timeMillis+"_"+filename;
-
                     File serverFile = new File(filepath);
-
                     fileList.transferTo(serverFile);
-
                     //照片存入数据库
                     PatientUploadImg patientUploadImg = new PatientUploadImg();
                     patientUploadImg.setImgName(timeMillis+"_"+filename);
@@ -165,12 +159,15 @@ public class PatientServiceImpl implements PatientService {
                     patientUploadImg.setPatientId(patId);
                     patientUploadImg.setUploadDate(new Date());
                     patientUploadImg.setImgSize(fileList.getSize());
-
                     patientUploadImg.setReportId(patReport.getId());
-
                     patUplImgRepository.save(patientUploadImg);
-
                 }
+                Doctor doctor=doctorRepository.findOneById(patient.getDoctorId());
+                System.out.println("----化验单上传----");
+                System.out.println(doctor);
+                System.out.println("---------");
+                MessageUtils.mySendName(doctor.getTelNum(),doctor.getDocName());
+//              MessageUtils.sendNameAndDate(patient.getTelNumber(),patient.getPatName(),sdf2.format(sdf1.parse(certainVisitDate)));
                 res.put("msg",true);
             }else {
                 //医生未设置上传报告单时间，不能上传
@@ -229,6 +226,7 @@ public class PatientServiceImpl implements PatientService {
         try {
             Map<String,Object> res = new HashMap<>();
             Patient patient = patientRepository.findOneById(patId);
+            Doctor doctor=doctorRepository.findOneById(patient.getDoctorId());
             Date painDate = patient.getPainDate();
             if(painDate!=null){
                 //疼痛感存入数据库
@@ -248,6 +246,11 @@ public class PatientServiceImpl implements PatientService {
                 patient.setActuPainDate(date);
                 patientRepository.save(patient);
                 res.put("msg",true);
+                System.out.println("----痛感上传-----");
+                System.out.println(doctor);
+                System.out.println("---------");
+                MessageUtils.mySendName(doctor.getTelNum(),doctor.getDocName());
+
             }else {
                 res.put("msg",false);
             }

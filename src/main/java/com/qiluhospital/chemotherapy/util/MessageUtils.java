@@ -41,6 +41,12 @@ public class MessageUtils {
         return sendSms(telephone,"SMS_182405479",name,params);
     }
 
+
+    public static SendSmsResponse mySendName(String telephone, String name) throws ClientException {
+        Map<String,Object> params = new HashMap<>();
+        params.put("name",name);
+        return sendSms(telephone,"SMS_198925864",name,params);
+    }
 //    public static QuerySendDetailsResponse querySendDetails(String tel, String sendTime) throws ClientException {
 //
 //        //可自助调整超时时间
