@@ -166,7 +166,9 @@ public class PatientServiceImpl implements PatientService {
                 System.out.println("----化验单上传----");
                 System.out.println(doctor);
                 System.out.println("---------");
-                MessageUtils.mySendName(doctor.getTelNum(),doctor.getDocName());
+                //MessageUtils.sendName(doctor.getTelNum(),doctor.getDocName());
+                MessageUtils.sendName1(doctor.getTelNum(),doctor.getDocName());
+
 //              MessageUtils.sendNameAndDate(patient.getTelNumber(),patient.getPatName(),sdf2.format(sdf1.parse(certainVisitDate)));
                 res.put("msg",true);
             }else {
@@ -249,7 +251,7 @@ public class PatientServiceImpl implements PatientService {
                 System.out.println("----痛感上传-----");
                 System.out.println(doctor);
                 System.out.println("---------");
-                MessageUtils.mySendName(doctor.getTelNum(),doctor.getDocName());
+                MessageUtils.sendName1(doctor.getTelNum(),doctor.getDocName());
 
             }else {
                 res.put("msg",false);

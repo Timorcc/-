@@ -33,7 +33,11 @@ public class MessageUtils {
         params.put("name",name);
         return sendSms(telephone,"SMS_181866047",name,params);
     }
-
+    public static SendSmsResponse sendName1(String telephone, String name) throws ClientException {
+        Map<String,Object> params = new HashMap<>();
+        params.put("name",name);
+        return sendSms(telephone,"SMS_198925864",name,params);
+    }
     public static SendSmsResponse sendNameAndDate(String telephone, String name ,String date) throws ClientException {
         Map<String,Object> params = new HashMap<>();
         params.put("name",name);
@@ -42,11 +46,7 @@ public class MessageUtils {
     }
 
 
-    public static SendSmsResponse mySendName(String telephone, String name) throws ClientException {
-        Map<String,Object> params = new HashMap<>();
-        params.put("name",name);
-        return sendSms(telephone,"SMS_198925864",name,params);
-    }
+
 //    public static QuerySendDetailsResponse querySendDetails(String tel, String sendTime) throws ClientException {
 //
 //        //可自助调整超时时间
