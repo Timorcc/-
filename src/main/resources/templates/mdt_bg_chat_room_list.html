@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8"/>
+    <title>聊天室列表</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}" media="all"/>
+    <style>
+        .layui-table, .layui-table th {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<blockquote class="layui-elem-quote">
+
+</blockquote>
+<div class="layui-form">
+    <!--医生列表Table-->
+    <table class="layui-table">
+        <colgroup>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="15%"/>
+            <col width="5%"/>
+            <col width="15%"/>
+            <col width="20%">
+            <col width="auto"/>
+        </colgroup>
+        <thead>
+        <tr>
+            <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"/></th>
+            <th>聊天室名称</th>
+            <th>所属科室</th>
+            <th>创建人</th>
+            <th>创建时间</th>
+            <th>状态</th>
+            <th>结束时间</th>
+            <th>诊断结论</th>
+            <th>查看聊天记录</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="chatRoomView:${chatRoomViews}" th:id="${chatRoomView.id}">
+            <td><input type="checkbox" name="f" lay-skin="primary" lay-filter='itemChoose'
+                       th:value="${chatRoomView.id}"/></td>
+            <td th:text="${chatRoomView.name}"></td>
+            <td th:text="${chatRoomView.depart_name}"></td>
+            <td th:text="${chatRoomView.username}"></td>
+            <td th:text="${chatRoomView.create_date}"></td>
+            <td th:text="${chatRoomView.state}"></td>
+            <td th:text="${chatRoomView.end_date}"></td>
+            <td th:text="${chatRoomView.conclusion}"></td>
+            <td>
+                <a title="查看聊天记录" data-method="chatMessage" class="tanchuang"><i class="layui-icon">&#xe642;</i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript" src="/static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+
+    //启用所有需要的layui里的组件
+    layui.use(['form', 'jquery', 'laypage', 'layer', 'table'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var laypage = layui.laypage;
+        var layer = layui.layer;
+
+        //全选
+        form.on('checkbox(allChoose)', function (data) {
+            var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+            child.each(function (index, item) {
+                item.checked = data.elem.checked;
+            });
+            form.render('checkbox');
+        });
+
+        //取消全选
+        form.on('checkbox(itemChoose)', function (data) {
+            var sib = $(data.elem).parents('table').find('tbody input[type="checkbox"]:checked').length;
+            var total = $(data.elem).parents('table').find('tbody input[type="checkbox"]').length;
+            if (sib == total) {
+                $(data.elem).parents('table').find('thead input[type="checkbox"]').prop("checked", true);
+                form.render();
+            } else {
+                $(data.elem).parents('table').find('thead input[type="checkbox"]').prop("checked", false);
+                form.render();
+            }
+        });
+
+        //设计弹出层
+        var active = {
+            //查看聊天记录
+            chatMessage: function (othis) {
+                var id = $(othis).parent('td').parent('tr').attr('id');
+                layer.open({
+                    type: 2
+                    , title: '查看聊天信息'
+                    , area: ['820px', '470px']
+                    , shade: 0.8
+                    , maxmin: true,
+                    /*<![CDATA[*/
+                    content: "chatRoom/list/chatMessage?chatRoomId=" + id
+                    /*]]>*/
+                });
+            },
+        };
+
+        //启用弹出层
+        $('.tanchuang').on('click', function () {
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+
+    });
+
+
+</script>
+</body>
+</html>

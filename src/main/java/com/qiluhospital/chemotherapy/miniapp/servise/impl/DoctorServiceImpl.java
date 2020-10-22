@@ -280,6 +280,8 @@ public class DoctorServiceImpl implements DoctorService {
                 patients = patientRepository.findAllByPatNameContainingAndConfirmStateAndState(
                         patName,patConfirmState.getState(),patState.getState());
             }
+            System.out.println("patients -----=====>>>");
+            System.out.println(patients);
             return patients;
         }catch (Exception e){
             log.error(e.toString());

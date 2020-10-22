@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>山东大学齐鲁医院MDT后台管理系统</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all" th:href="@{/static/layui/css/layui.css}"/>
+    <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css"
+          th:href="@{/static/font-awesome/css/font-awesome.min.css}" media="all"/>
+    <link rel="stylesheet" href="/static/css/app.css" th:href="@{/static/css/app.css}" media="all"/>
+    <link rel="stylesheet" href="/static/css/themes/default.css" th:href="@{/static/css/themes/default.css}" media="all" kit-skin=""
+          id="skin"/>
+    <script src="/static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
+
+</head>
+
+<body class="kit-theme">
+<div class="layui-layout layui-layout-admin kit-layout-admin">
+    <!--头部-->
+    <div class="layui-header">
+        <div class="layui-logo">MDT后台管理系统</div>
+        <div class="layui-logo kit-logo-mobile">K</div>
+        <ul class="layui-nav layui-layout-right kit-nav">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="../static/img/face.png" th:src="@{/static/img/face.png}" class="layui-nav-img"/> 欢迎您，<span th:text="${session.username}"></span>
+                </a>
+            </li>
+            <li class="layui-nav-item"><a href="logout"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a></li>
+        </ul>
+    </div>
+    <!--侧边栏-->
+    <div class="layui-side layui-bg-black kit-side">
+        <div class="layui-side-scroll">
+            <div class="kit-side-fold"><i class="fa fa-navicon" aria-hidden="true"></i></div>
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="kitNavbar" kit-navbar="">
+                <!--大秘书管理-->
+                <div th:if="${session.username}==root">
+                    <li class="layui-nav-item">
+                        <a class="" href="javascript:;"><i class="layui-icon">&#xe612;</i><span> 大秘书管理</span></a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="javascript:;" kit-target=""
+                                   data-options="{url:'bigsecretarylist',icon:'&#xe612;',title:'大秘书列表',id:'11'}">
+                                    <i class="layui-icon">&#xe612;</i><span> 大秘书列表</span></a>
+                            </dd>
+                        </dl>
+                    </li>
+                </div>
+                <!--小秘书管理-->
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;"><i class="layui-icon">&#xe770;</i><span> 小秘书管理</span></a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="javascript:;" kit-target=""
+                               data-options="{url:'smallsecretarylist',icon:'&#xe66f;',title:'小秘书列表',id:'21'}">
+                                <i class="layui-icon">&#xe66f;</i><span> 小秘书列表</span></a>
+                        </dd>
+                    </dl>
+                </li>
+                <!--医生管理-->
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;"><i class="layui-icon">&#xe716;</i><span> 医生管理</span></a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="javascript:;" kit-target=""
+                               data-options="{url:'doctorList',icon:'&#xe66f;',title:'医生管理',id:'31'}">
+                                <i class="layui-icon">&#xe66f;</i><span> 医生列表</span></a>
+                        </dd>
+                    </dl>
+                </li>
+                <!--科室管理-->
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;"><i class="layui-icon">&#xe716;</i><span> 科室管理</span></a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="javascript:;" kit-target=""
+                               data-options="{url:'departmentList',icon:'&#xe66f;',title:'科室管理',id:'41'}">
+                                <i class="layui-icon">&#xe66f;</i><span> 科室列表</span></a>
+                        </dd>
+                    </dl>
+                </li>
+                <!--聊天室管理-->
+                <div th:if="${session.username}==root">
+                    <li class="layui-nav-item">
+                        <a class="" href="javascript:;"><i class="layui-icon">&#xe716;</i><span> 聊天室管理</span></a>
+                        <dl class="layui-nav-child">
+                            <dd >
+                                <a href="javascript:;" kit-target=""
+                                   data-options="{url:'chatRoom',icon:'&#xe66f;',title:'聊天室管理',id:'51'}">
+                                    <i class="layui-icon">&#xe66f;</i><span>聊天室列表</span></a>
+                            </dd>
+                        </dl>
+                    </li>
+                </div>
+            </ul>
+        </div>
+    </div>
+    <!--主体-->
+    <div class="layui-body" id="container">
+        <div style="padding: 15px;"><i class="layui-icon layui-anim layui-anim-rotate layui-anim-loop">&#xe63e;</i>
+            请稍等...
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var message;
+    layui.config({
+        base: '../../static/src/js/',
+        version: '1.0.1'
+    }).use(['app', 'message'], function () {
+        var app = layui.app,
+            $ = layui.jquery,
+            layer = layui.layer;
+
+        //将message设置为全局以便子页面调用
+        message = layui.message;
+        //主入口
+        app.set({
+            type: 'iframe'
+        }).init();
+
+        $('dl.skin > dd').on('click', function () {
+            var $that = $(this);
+            var skin = $that.children('a').data('skin');
+            switchSkin(skin);
+        });
+        var setSkin = function (value) {
+                layui.data('kit_skin', {
+                    key: 'skin',
+                    value: value
+                });
+            },
+            getSkinName = function () {
+                return layui.data('kit_skin').skin;
+            },
+            switchSkin = function (value) {
+                var _target = $('link[kit-skin]')[0];
+                _target.href = _target.href.substring(0, _target.href.lastIndexOf('/') + 1) + value + _target.href.substring(_target.href.lastIndexOf('.'));
+                setSkin(value);
+
+            },
+            initSkin = function () {
+                var skin = getSkinName();
+                switchSkin(skin === undefined ? 'default' : skin);
+            }();
+    });
+</script>
+</body>
+
+</html>

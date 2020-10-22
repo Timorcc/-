@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface BgdDoctorServise {
 
-
     List<DocView> getDocList(int pageIndex, int pageSize, String docName);
 
     long countAllDoc();

@@ -23,13 +23,13 @@ public class BgdAdminController {
     @Autowired
     private BgdAdminServiseImpl bgdAdminServise;
 
+
     @Autowired
     private DoctorServiceImpl doctorService;
 
+
 //    @Autowired
 //    private DefaultKaptcha defaultKaptcha;
-
-
 //    @RequestMapping("/vryCodeGet")
 //    public void defaultKpatcha(HttpServletRequest request, HttpServletResponse response) throws Exception{
 //        System.out.println("vryCodeGet");
@@ -63,7 +63,6 @@ public class BgdAdminController {
     public String loginHtml() {
         return "login";
     }
-
     @RequestMapping(value = "background/logout")
     public String loginout(HttpServletRequest request) {
         //false代表：不创建session对象，只是从request中获取。
@@ -176,11 +175,4 @@ public class BgdAdminController {
         res.put("state",isSucc);
         return res;
     }
-
-
-
-
-
-
-
 }

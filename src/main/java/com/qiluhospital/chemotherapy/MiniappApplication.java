@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.mybatis.spring.annotation.MapperScan;
 
-//@Configuration
-//@EnableAsync
 @SpringBootApplication
+@MapperScan(basePackages = {"com.qiluhospital.chemotherapy.mdtbackground.mapper,com.qiluhospital.chemotherapy.mdt.mapper"})
 public class MiniappApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
@@ -46,7 +46,5 @@ public class MiniappApplication extends SpringBootServletInitializer {
 //        }
         return builder.sources(MiniappApplication.class);
     }
-
-
 }
 

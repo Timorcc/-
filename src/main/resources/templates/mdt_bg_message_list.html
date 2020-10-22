@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>消息列表</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" href="/static/layui/css/formSelects-v4.css" th:href="@{/static/layui/css/formSelects-v4.css}" media="all"/>
+    <style>
+        .left {
+            width: 50%;
+            position: absolute;
+            top: 30px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="left">
+<div th:each="message:${messageList}">
+    <span th:text="${message.username}"></span>
+    <span>-----------</span>
+    <span th:text="${message.content}"></span>
+
+</div>
+</div>
+<script type="text/javascript" src="/static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+
+    //开启layui的组件
+    layui.use(['form', 'jquery', 'layer'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var layer = layui.layer;
+    });
+</script>
+</body>
+</html>

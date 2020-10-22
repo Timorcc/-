@@ -9,14 +9,15 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 	<meta name="apple-mobile-web-app-capable" content="yes"/>
 	<meta name="format-detection" content="telephone=no"/>
-	<link rel="icon" href="../static/img/face.png"/>
-	<link rel="stylesheet" href="../static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}" media="all" />
-	<link rel="stylesheet" href="../static/css/public.css" th:href="@{/static/css/public.css}" media="all" />
+	<link rel="icon" href="/static/img/face.png"/>
+	<link rel="stylesheet" href="/static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}" media="all" />
+	<link rel="stylesheet" href="/static/css/public.css" th:href="@{/static/css/public.css}" media="all" />
+	<script type="text/javascript" src="/static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
 	<script type="text/javascript" src="../static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
 </head>
 <body class="loginBody">
-	<form class="layui-form"  >
-		<div class="login_face"><img src="../static/img/face.png" th:src="@{/static/img/face.png}" class="userAvatar" /></div>
+	<form class="layui-form">
+		<div class="login_face"><img src="/static/img/face.png" th:src="@{/static/img/face.png}" class="userAvatar" /></div>
 		<div class="layui-form-item input-item">
 			<label for="userName">用户名</label>
 			<input type="text" placeholder="请输入用户名" autocomplete="off" name="username" id="username" class="layui-input" lay-verify="required"/>
@@ -25,22 +26,15 @@
 			<label for="password">密码</label>
 			<input type="password" placeholder="请输入密码" autocomplete="off" name="password" id="password" class="layui-input" lay-verify="required"/>
 		</div>
-		<!--<div class="layui-form-item input-item" id="imgCode">-->
-			<!--<label for="code">验证码</label>-->
-			<!--<input type="text" placeholder="请输入验证码" autocomplete="off" id="code" name="code" class="layui-input"/>-->
-			<!--<img id="codeImg" src="../static/img/code.jpg" th:src="@{/vryCodeGet}" />-->
-		<!--</div>-->
+
 		<div class="layui-form-item">
 			<button class="layui-btn layui-block  login_btn"  id="login_btn"  type="button" >登录</button>
 		</div>
-		<!--<div class="layui-form-item" style="text-align: center">
-			<p style="color: red; font-size: 16px" th:text="${msg}"></p>
-		</div>-->
+
 	</form>
 </body>
 
 <script>
-
     layui.use(['form','layer','jquery'],function(){
         var form = layui.form,
             layer = parent.layer === undefined ? layui.layer : top.layer
@@ -67,8 +61,6 @@
                 $(this).parent().removeClass("layui-input-active");
             }
         })
-
-
         $('#login_btn').on('click', function(){
             var userName=$("#username").val();
             var password=$("#password").val();
@@ -91,7 +83,6 @@
                     } else{
                         layer.msg(data.msg,{icon:2,time:2000});
                     }
-
                 },
                 error:function (e) {
                     console.log(e);
@@ -106,7 +97,6 @@
         });
 
     })
-
 </script>
 
 

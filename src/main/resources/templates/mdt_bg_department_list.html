@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>科室列表</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}" media="all"/>
+    <style>
+        .layui-table, .layui-table th {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<blockquote class="layui-elem-quote">
+    <!--添加科室按钮-->
+    <div class="layui-inline">
+        <button type="button" class="layui-btn  tanchuang" id="add" data-method="addDepartment"><i
+                class="layui-icon">&#xe61f;</i>添加科室
+        </button>
+    </div>
+
+</blockquote>
+<div class="layui-form">
+    <!--科室列表Table-->
+    <table class="layui-table">
+        <colgroup>
+            <col width="10%"/>
+            <col width="40%"/>
+            <col width="auto"/>
+        </colgroup>
+        <thead>
+        <tr>
+            <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"/></th>
+            <th>科室名称</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="departmentView:${departmentViews}" th:id="${departmentView.id}">
+            <td><input type="checkbox" name="f" lay-skin="primary" lay-filter='itemChoose'
+                       th:value="${departmentView.id}"/></td>
+            <td th:text="${departmentView.depart_name}"></td>
+            <td>
+                <a title="修改科室" data-method="modDepartment" class="tanchuang"><i class="layui-icon">&#xe642;</i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript" src="/static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+
+    //启用所有需要的layui里的组件
+    layui.use(['form', 'jquery', 'laypage', 'layer', 'table'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var laypage = layui.laypage;
+        var layer = layui.layer;
+
+
+        //全选
+        form.on('checkbox(allChoose)', function (data) {
+            var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+            child.each(function (index, item) {
+                item.checked = data.elem.checked;
+            });
+            form.render('checkbox');
+        });
+
+        //取消全选
+        form.on('checkbox(itemChoose)', function (data) {
+            var sib = $(data.elem).parents('table').find('tbody input[type="checkbox"]:checked').length;
+            var total = $(data.elem).parents('table').find('tbody input[type="checkbox"]').length;
+            if (sib == total) {
+                $(data.elem).parents('table').find('thead input[type="checkbox"]').prop("checked", true);
+                form.render();
+            } else {
+                $(data.elem).parents('table').find('thead input[type="checkbox"]').prop("checked", false);
+                form.render();
+            }
+        });
+
+        //设计弹出层
+        var active = {
+            //修改科室信息
+            modDepartment: function (othis) {
+                var id = $(othis).parent('td').parent('tr').attr('id');
+                layer.open({
+                    type: 2
+                    , title: '修改科室信息'
+                    , area: ['820px', '470px']
+                    , shade: 0.8
+                    , maxmin: true,
+                    /*<![CDATA[*/
+                    content: "department/list/edit?id=" + id
+                    /*]]>*/
+                });
+            },
+            //添加新的科室
+            addDepartment: function () {
+                layer.open({
+                    type: 2
+                    , title: '添加科室'
+                    , area: ['820px', '470px']
+                    , shade: 0.8
+                    , maxmin: true,
+                    /*<![CDATA[*/
+                    content: "department/list/add"
+                    /*]]>*/
+                });
+            },
+
+        };
+
+        //启用弹出层
+        $('.tanchuang').on('click', function () {
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="/static/layui/css/layui.css" media="all" th:href="@{/static/layui/css/layui.css}"/>
+<link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css"
+      th:href="@{/static/font-awesome/css/font-awesome.min.css}" media="all"/>
+<link rel="stylesheet" href="/static/css/app.css" th:href="@{/static/css/app.css}" media="all"/>
+<link rel="stylesheet" href="/static/css/themes/default.css" th:href="@{/static/css/themes/default.css}" media="all" kit-skin=""
+      id="skin"/>
+<head>
+    <title>index</title>
+</head>
+<body>
+<div>
+    聊天室列表
+    <!--医生列表Table-->
+    <table class="layui-table">
+        <colgroup>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="auto"/>
+        </colgroup>
+        <thead>
+        <tr>
+            <th>聊天室id</th>
+            <th>聊天室名称</th>
+            <th>聊天室创建时间</th>
+            <th>聊天室创建者的id</th>
+            <th>聊天室创建者姓名</th>
+            <th>聊天室所属科室</th>
+            <th>聊天室状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="chatRoomView:${chatRoomViews}" th:id="${chatRoomView.id}">
+            <div th:if="${chatRoomView.state} eq true ">
+                <td th:text="${chatRoomView.id}"></td>
+                <td th:text="${chatRoomView.name}"></td>
+                <td th:text="${chatRoomView.create_date}"></td>
+                <td th:text="${chatRoomView.create_admin_id}"></td>
+                <td th:text="${chatRoomView.username}"></td>
+                <td th:text="${chatRoomView.depart_name}"></td>
+                <td th:text="${chatRoomView.state}"></td>
+                <td>
+                    <a th:href="@{'/mdt/chat/'+${chatRoomView.id}+'/'+${session.id}}">进入聊天室</a>
+                    <a th:if="${session.id}<9000" title="修改信息" data-method="closeChatRoom" class="tanchuang">关闭聊天室</a>
+                </td>
+            </div>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:if="${session.id}<9000">
+    添加聊天室
+    <div class="layui-inline">
+        <button type="button" class="layui-btn  tanchuang" id="add" data-method="addChatRoom"><i
+                class="layui-icon">&#xe61f;</i>添加聊天室
+        </button>
+    </div>
+</div>
+<hr>
+<hr>
+<hr>
+你的登录信息：
+<span th:text="${session.id}"></span>
+<span th:text="${session.username}"></span>
+<span th:text="${session.telNum}"></span>
+<span th:text="${session.wxNum}"></span>
+</body>
+
+<script type="text/javascript" src="/static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+
+    //启用所有需要的layui里的组件
+    layui.use(['form', 'jquery', 'laypage', 'layer', 'table'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var layer = layui.layer;
+
+        //设计弹出层
+        var active = {
+            //添加新的聊天室
+            addChatRoom: function () {
+                layer.open({
+                    type: 2
+                    , title: '添加聊天室'
+                    , area: ['820px', '470px']
+                    , shade: 0.8
+                    , maxmin: true,
+                    /*<![CDATA[*/
+                    content: "chatRoom/add"
+                    /*]]>*/
+                });
+            },
+
+            closeChatRoom: function (othis) {
+                var id = $(othis).parent('td').parent('tr').attr('id');
+                console.log("需要关闭的聊天室为:");
+                console.log(id);
+                layer.open({
+                    type: 2
+                    , title: '添加诊断结论&&关闭聊天室'
+                    , area: ['820px', '470px']
+                    , shade: 0.8
+                    , maxmin: true,
+                    /*<![CDATA[*/
+                    content: "chatRoom/closeChatRoom/?id=" + id
+                    /*]]>*/
+                });
+            },
+
+        };
+
+        //启用弹出层
+        $('.tanchuang').on('click', function () {
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+    });
+
+
+</script>
+</html>
