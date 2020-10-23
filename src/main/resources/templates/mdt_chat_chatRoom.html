@@ -148,7 +148,7 @@
     <div class="talk_input">
         <input type="text" class="talk_word" id="input_msg">
         <input type="button" value="发送" class="talk_sub" onclick="send_msg()">
-        <input type="file" id="uploadPic">
+        <input type="file" id="uploadPic" multiple="multiple">
         <button onclick="UploadPictureTest()">up</button>
     </div>
 </div>
@@ -156,7 +156,7 @@
 <script language=javascript src='https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js'></script>
 <script type="text/javascript">
     //线上  ==》记得修改webSocketConfig==》注释
-    var base = "chem.qiluhospital.com:553";
+    var base = "https://chem.qiluhospital.com:553";
     var imagePrefixUrl = "https://chem.qiluhospital.com:553/qilu/patient/img/";
     var webSocketUrl = "wss://chem.qiluhospital.com:553/qilu/webSocket/chat/";
     var UpImageUrl = "/qilu/mdt/image/upload_file";
@@ -180,7 +180,7 @@
             alert("您已进入聊天室...");
         }
         webSocket.onopen = function () {
-            alert("已进入聊天室，畅聊吧...");
+            // alert("已进入聊天室，畅聊吧...");
         };
         webSocket.onmessage = function (evt) {
             var Words = document.getElementById("words");
@@ -254,23 +254,56 @@
      * 获取某个文档的详细内容
      */
     function upImg(data) {
-        sendMultipartRequest(UpImageUrl, "POST", data, callback);
+        // sendMultipartRequest(UpImageUrl, "POST", data, callback);
+        sendNormalRequest(UpImageUrl, "POST", data, callback);
     }
 
     function callback(str) {
         console.log(str);
     }
+
     console.log("1234")
+
     function UploadPictureTest() {
         var data = new FormData();
         //只有使用enctype="multipart/form-data",才会把文件的内容编码到HTML请求中。
         data.enctype = "multipart/form-data";
-        data.append("file", $('#uploadPic')[0].files[0]);
-        data.append("fileName", $('#uploadPic')[0].files[0].name);
-        data.append("type", $('#uploadPic')[0].files[0].type);
-        data.append("chatRoomId", roomName);
-        data.append("userId", userId);
-        upImg(data);
+        console.log("-------------------")
+        console.log($('#uploadPic'))
+        console.log($('#uploadPic')[0])
+        console.log($('#uploadPic')[0].files[0])
+
+        var file = $('#uploadPic')[0].files[0];
+        var reader = new FileReader();//新建一个FileReader
+        reader.readAsDataURL(file);
+        // reader.readAsText(file, "UTF-8");//读取文件
+        reader.onload = function (evt) { //读取完文件之后会回来这里
+            var fileString = evt.target.result; // 读取文件内容
+            // console.log("filestring")
+            // console.log(fileString);
+
+            var startNum = fileString.indexOf("base64,");
+            startNum = startNum * 1 + 7;
+            //去除前部格式信息（如果有需求）
+            var baseStr = fileString.slice(startNum);
+
+            data.append("file", baseStr);
+            // data.append("base64", base64);
+            // data.append("arraybuffer", arraybuffer);
+            data.append("fileName", $('#uploadPic')[0].files[0].name);
+            data.append("type", $('#uploadPic')[0].files[0].type);
+            data.append("chatRoomId", roomName);
+            data.append("userId", userId);
+            upImg(data);
+
+        }
+
+        // data.append("file", $('#uploadPic')[0].files[0]);
+        // data.append("fileName", $('#uploadPic')[0].files[0].name);
+        // data.append("type", $('#uploadPic')[0].files[0].type);
+        // data.append("chatRoomId", roomName);
+        // data.append("userId", userId);
+        // upImg(data);
     }
 
 
@@ -291,24 +324,7 @@
     }
 
     function sendMultipartRequest(url, method, data, callback) {
-        // $.ajax({
-        //     url: base + url,
-        //     type: method,
-        //     "Access-Control-Allow-Origin": "*",
-        //     async: true,
-        //     processData: false,   // jQuery不要去处理发送的数据
-        //     contentType: true,   // jQuery不要去设置Content-Type请求头
-        //     data: data,
-        //     success: function (res) {
-        //         if (callback) callback(res);
-        //     },
-        //     error: function (res) {
-        //         console.log("error");
-        //         console.log(res);
-        //     }
-        // })
 
-        // 1234
         $.ajax({
             url: base + url,
             type: method,
@@ -317,10 +333,39 @@
             processData: false,   // jQuery不要去处理发送的数据
             contentType: false,   // Query不要去设置Content-Type请求头
             data: data,
-            success: function(res) {
+            // headers:{
+            //     'Content-Type': 'application/x-www-form-urlencoded'
+            // },
+            success: function (res) {
                 if (callback) callback(res);
             },
-            error: function(res) {
+            error: function (res) {
+                console.log("error");
+                console.log(res);
+            }
+
+        })
+
+    }
+
+
+    function sendNormalRequest(url, method, data, callback) {
+
+        $.ajax({
+            url: base + url,
+            type: method,
+            "Access-Control-Allow-Origin": "*",
+            async: false,
+            processData: false,   // jQuery不要去处理发送的数据
+            contentType: false,   // Query不要去设置Content-Type请求头
+            data: data,
+            // headers:{
+            //     'Content-Type': 'multipart/form-data'
+            // },
+            success: function (res) {
+                if (callback) callback(res);
+            },
+            error: function (res) {
                 console.log("error");
                 console.log(res);
             }
