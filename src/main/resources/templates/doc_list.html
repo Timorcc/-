@@ -1,228 +1,253 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="utf-8"/>
-	<title>医生列表</title>
-	<link rel="stylesheet" href="../static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}" media="all" />
-	<style>
-		.layui-table,.layui-table th{ text-align:center; }
-	</style>
+    <meta charset="utf-8"/>
+    <title>医生列表</title>
+    <link rel="stylesheet" href="../static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}" media="all"/>
+    <style>
+        .layui-table, .layui-table th {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-	<blockquote class="layui-elem-quote">
-		<div class="layui-inline">
-		    <div class="layui-input-inline">
-		    	<input type="text"  placeholder="请输入医生姓名" id="searchInp" class="layui-input search_input" th:value="${docName}"/>
-		    </div>
-		    <a class="layui-btn search_btn search"><i class="layui-icon">&#xe615;</i>查询</a>
-		</div>
-		<!--<div class="layui-inline">-->
-			<!--<button type="button" class="layui-btn layui-btn-normal" id="up"><i class="layui-icon">&#xe67c;</i>文件上传</button>-->
-		<!--</div>-->
-		<!--<div class="layui-inline">-->
-			<!--<a class="layui-btn layui-btn-danger batchDel tanchuang" data-method="mulDel"><i class="layui-icon">&#xe640;</i>批量删除</a>-->
-		<!--</div>-->
-	</blockquote>
-	<div class="layui-form">
-		<table class="layui-table">
-			<colgroup>
-				<col width="5%"/>
-				<col width="10%"/>
-				<col width="10%"/>
-				<col width="10%"/>
-				<col width="15%"/>
-                <col width="15%"/>
-				<col width="15%"/>
-				<col width="10%"/>
-				<col width="auto"/>
-			</colgroup>
-			<thead>
-			<tr>
-				<th><input type="checkbox" name="" lay-skin="primary"  lay-filter="allChoose" /></th>
-				<th>医生姓名</th>
-				<th>分组名称</th>
-				<th>医生类型</th>
-				<th>身份证号</th>
-                <th>职业编号</th>
-				<th>电话号码</th>
-				<th>是否认证</th>
-				<th>操作</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr th:each="docView:${docViews}" th:id="${docView.docId}">
-				<td><input type="checkbox" name="f"  lay-skin="primary" lay-filter='itemChoose' th:value="${docView.docId}"/></td>
-				<td th:text="${docView.docName}"></td>
-				<td th:text="${docView.groupName}"></td>
-				<td th:text="${docView.type}"></td>
-				<td th:text="${docView.ideNum}"></td>
-				<td th:text="${docView.profNum}"></td>
-				<td th:text="${docView.telNum}"></td>
-				<td th:text="${docView.authenticity}"></td>
-				<td>
-					<a title="确定或取消认证" data-method="authDoc" class="tanchuang"><i class="layui-icon">&#xe605;</i></a>
-					<!--<a title="取消认证" data-method="cancelAuthDoc" class="tanchuang"><i class="layui-icon">&#x1006;</i></a>-->
-					<a title="修改分组" data-method="modGroup" class="tanchuang"><i class="layui-icon">&#xe642;</i></a>
-					<!--<a title="查看详细信息" data-method="modGroup" class="tanchuang"><i class="layui-icon">&#xe63c;</i></a>-->
-					<!--<a title="删除" data-method="modGroup" class="tanchuang"><i class="layui-icon">&#xe640;</i></a>-->
-				</td>
-			</tr>
-			</tbody>
-		</table>
-	</div>
-	<div id="page" style="text-align: center"></div>
-	<script type="text/javascript" src="../static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
-	<script type="text/javascript" th:inline="javascript">
+<blockquote class="layui-elem-quote">
+    <div class="layui-inline">
+        <div class="layui-input-inline">
+            <input type="text" placeholder="请输入医生姓名" id="searchInp" class="layui-input search_input"
+                   th:value="${docName}"/>
+        </div>
+        <a class="layui-btn search_btn search"><i class="layui-icon">&#xe615;</i>查询</a>
+    </div>
+    <!--<div class="layui-inline">-->
+    <!--<button type="button" class="layui-btn layui-btn-normal" id="up"><i class="layui-icon">&#xe67c;</i>文件上传</button>-->
+    <!--</div>-->
+    <!--<div class="layui-inline">-->
+    <!--<a class="layui-btn layui-btn-danger batchDel tanchuang" data-method="mulDel"><i class="layui-icon">&#xe640;</i>批量删除</a>-->
+    <!--</div>-->
+</blockquote>
+<div class="layui-form">
+    <table class="layui-table">
+        <colgroup>
+            <col width="5%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="15%"/>
+            <col width="15%"/>
+            <col width="15%"/>
+            <col width="10%"/>
+            <col width="auto"/>
+        </colgroup>
+        <thead>
+        <tr>
+            <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"/></th>
+            <th>医生姓名</th>
+            <th>分组名称</th>
+            <th>医生类型</th>
+            <th>身份证号</th>
+            <th>职业编号</th>
+            <th>电话号码</th>
+            <th>是否认证</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="docView:${docViews}" th:id="${docView.docId}">
+            <td><input type="checkbox" name="f" lay-skin="primary" lay-filter='itemChoose' th:value="${docView.docId}"/>
+            </td>
+            <td th:text="${docView.docName}"></td>
+            <td th:text="${docView.groupName}"></td>
+            <td th:text="${docView.type}"></td>
+            <td th:text="${docView.ideNum}"></td>
+            <td th:text="${docView.profNum}"></td>
+            <td th:text="${docView.telNum}"></td>
+            <td th:text="${docView.authenticity}"></td>
+            <td>
+                <a title="认证/取消认证" data-method="authDoc" class="tanchuang"><i class="layui-icon"
+                                                                              style="color: #009688;">&#xe605;</i></a>
+                <!--<a title="取消认证" data-method="cancelAuthDoc" class="tanchuang"><i class="layui-icon">&#x1006;</i></a>-->
+                <a title="编辑" data-method="modGroup" class="tanchuang"><i class="layui-icon" style="color: #009688;">&#xe642;</i></a>
+                <!--<a title="查看详细信息" data-method="modGroup" class="tanchuang"><i class="layui-icon">&#xe63c;</i></a>-->
+                <!--<a title="删除" data-method="modGroup" class="tanchuang"><i class="layui-icon">&#xe640;</i></a>-->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div id="page" style="text-align: center"></div>
+<script type="text/javascript" src="../static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
+<script type="text/javascript" th:inline="javascript">
 
-		var count = [[${count}]]
-        var currPage = [[${currentPage}]]
-		var pagesize = [[${pagesize}]]
+    var count = [[${count}]]
+    var currPage = [[${currentPage}]]
+    var pagesize = [[${pagesize}]]
 
-		//启用所有需要的layui里的组件
-        layui.use(['form','jquery','laypage','layer','table'], function(){
-            var form = layui.form;
-			var $ = layui.jquery;
-            var laypage = layui.laypage;
-            var layer = layui.layer;
+    //启用所有需要的layui里的组件
+    layui.use(['form', 'jquery', 'laypage', 'layer', 'table'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var laypage = layui.laypage;
+        var layer = layui.layer;
 
-            //分页
-            laypage.render({
-                elem: 'page', //注意，这里的 page 是 ID，不用加 # 号
-                count:count,
-                limit:pagesize,
-                curr:currPage,
-                prev:'上一页',
-                next:'下一页',
-                layout:['prev', 'page', 'next'],
-                jump : function(obj, first) {
-                    var docName = $('#searchInp').val();
-                    if (!first) {
-                        var pindex=obj.curr;
-                        /*<![CDATA[*/
-                        window.location.href="doclist?page="+pindex+'&docName='+docName;//跳转链接
-                        /*]]>*/
-                    }
-                }
-            });
-
-            //实现查询
-            $('.search').click(function () {
+        //分页
+        laypage.render({
+            elem: 'page', //注意，这里的 page 是 ID，不用加 # 号
+            count: count,
+            limit: pagesize,
+            curr: currPage,
+            prev: '上一页',
+            next: '下一页',
+            layout: ['prev', 'page', 'next'],
+            jump: function (obj, first) {
                 var docName = $('#searchInp').val();
-			   if (docName==null || docName.trim() === ''){
-					layer.open({
-						title:'提示',
-						content:'请输入查询信息'
-					});
-					return;
-				}
-                /*<![CDATA[*/
-                window.location.href="doclist?docName="+docName;
-                /*]]>*/
-            });
-
-            //全选
-            form.on('checkbox(allChoose)', function(data){
-                var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
-                child.each(function(index, item){
-                    item.checked = data.elem.checked;
-                });
-                form.render('checkbox');
-            });
-
-            //取消全选
-            form.on('checkbox(itemChoose)',function(data){
-                var sib = $(data.elem).parents('table').find('tbody input[type="checkbox"]:checked').length;
-                var total = $(data.elem).parents('table').find('tbody input[type="checkbox"]').length;
-                if(sib == total){
-                    $(data.elem).parents('table').find('thead input[type="checkbox"]').prop("checked",true);
-                    form.render();
-                }else{
-                    $(data.elem).parents('table').find('thead input[type="checkbox"]').prop("checked",false);
-                    form.render();
+                if (!first) {
+                    var pindex = obj.curr;
+                    /*<![CDATA[*/
+                    window.location.href = "doclist?page=" + pindex + '&docName=' + docName;//跳转链接
+                    /*]]>*/
                 }
-            });
-
-            //设计弹出层
-            var active = {
-                //认证医生
-                authDoc: function(othis){
-                    var id=  $(othis).parent('td').parent('tr').attr('id');
-                    layer.open({
-                        type: 1
-                        ,title: false //不显示标题栏
-                        ,closeBtn: false
-                        ,area: '300px;'
-                        ,shade: 0.8
-                        ,id: 'LAY_layuipro'//设定一个id，防止重复弹出
-                        ,btn: ['确定', '取消','放弃本次操作']
-                        ,btnAlign: 'c'
-                        ,moveType: 1 //拖拽模式，0或者1
-                        ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;text-align: center">是否认证该医生?</div>'
-                        ,yes: function(index){
-                            layer.close(index);
-                            $.ajax({
-                                type: 'POST',
-                                url: 'doc/auth/yes',
-                                data: {id:id},
-                                dataType: 'json',
-                                success: function(result){
-                                    if(result.success){
-                                        layer.msg('该医生已经通过认证!',{icon:1,time:1000});
-                                        /*<![CDATA[*/
-                                        window.location.href="doclist?page="+currPage;//跳转链接
-                                        /*]]>*/
-                                    }else {
-                                        layer.msg('认证过程出现错误，请稍后重试!',{icon:1,time:1000});
-                                    }
-                                }
-                            });
-                        },
-                        btn2: function(index, layero){
-                            layer.close(index);
-                            $.ajax({
-                                type: 'POST',
-                                url: 'doc/auth/cancel',
-                                data: {id:id},
-                                dataType: 'json',
-                                success: function(result){
-                                    if(result.success){
-                                        layer.msg('该医生已经取消认证!',{icon:1,time:1000});
-                                        /*<![CDATA[*/
-                                        window.location.href="doclist?page="+currPage;//跳转链接
-                                        /*]]>*/
-                                    }else {
-                                        layer.msg('取消认证过程出现错误，请稍后重试!',{icon:1,time:1000});
-                                    }
-                                }
-                            });
-                        }
-                    });
-                },
-                //修改分组
-                modGroup: function(othis){
-                    var id = $(othis).parent('td').parent('tr').attr('id');
-                    // var name = $(othis).parent('td').parent('tr').children('.second').attr('value');
-                    layer.open({
-                        type: 2
-                        ,title: '修改分组'
-                        ,area: ['820px', '470px']
-                        ,shade: 0.8
-                        ,maxmin: true,
-                        /*<![CDATA[*/
-                        content: "doctor/grouplist?id="+ id
-                        /*]]>*/
-                    });
-                }
-            };
-            //启用弹出层
-            $('.tanchuang').on('click', function(){
-                var othis = $(this), method = othis.data('method');
-                active[method] ? active[method].call(this, othis) : '';
-            });
+            }
         });
 
+        //查询
+        $('.search').click(function () {
+            var docName = $('#searchInp').val();
+            if (docName == null || docName.trim() === '') {
+                layer.open({
+                    title: '提示',
+                    content: '请输入查询信息'
+                });
+                return;
+            }
+            /*<![CDATA[*/
+            window.location.href = "doclist?docName=" + docName;
+            /*]]>*/
+        });
+
+        //全选
+        form.on('checkbox(allChoose)', function (data) {
+            var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+            child.each(function (index, item) {
+                item.checked = data.elem.checked;
+            });
+            form.render('checkbox');
+        });
+
+        //取消全选
+        form.on('checkbox(itemChoose)', function (data) {
+            var sib = $(data.elem).parents('table').find('tbody input[type="checkbox"]:checked').length;
+            var total = $(data.elem).parents('table').find('tbody input[type="checkbox"]').length;
+            if (sib == total) {
+                $(data.elem).parents('table').find('thead input[type="checkbox"]').prop("checked", true);
+                form.render();
+            } else {
+                $(data.elem).parents('table').find('thead input[type="checkbox"]').prop("checked", false);
+                form.render();
+            }
+        });
+
+        //设计弹出层
+        var active = {
+            //认证医生
+            authDoc: function (othis) {
+                var id = $(othis).parent('td').parent('tr').attr('id');
+                layer.open({
+                    type: 1
+                    ,
+                    title: false //不显示标题栏
+                    ,
+                    closeBtn: false
+                    ,
+                    area: '300px;'
+                    ,
+                    shade: 0.8
+                    ,
+                    id: 'LAY_layuipro'//设定一个id，防止重复弹出
+                    ,
+                    btn: ['认证', '取消认证']
+                    ,
+                    btnAlign: 'c'
+                    ,
+                    moveType: 1 //拖拽模式，0或者1
+                    ,
+                    content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;text-align: center">是否认证该医生?</div>'
+                    ,
+                    yes: function (index) {
+                        $.ajax({
+                            type: 'POST',
+                            url: 'doc/auth/yes',
+                            data: {id: id},
+                            dataType: 'json',
+                            success: function (result) {
+                                if (result.success) {
+                                    layer.msg('该医生已经通过认证!', {
+                                        icon: 1, time: 1000, end: function () {
+                                            window.location.href = "doclist?page=" + currPage;//跳转链接
+                                        }
+                                    });
+                                    /*<![CDATA[*/
+                                    /*]]>*/
+                                } else {
+                                    layer.msg('认证过程出现错误，请稍后重试!', {icon: 1, time: 1000});
+                                }
+
+                            }
+                        });
+
+                        layer.close(index);
+                    },
+                    btn2: function (index, layero) {
+                        $.ajax({
+                            type: 'POST',
+                            url: 'doc/auth/cancel',
+                            data: {id: id},
+                            dataType: 'json',
+                            success: function (result) {
+                                if (result.success) {
+                                    layer.msg('该医生已经取消认证!', {
+                                        icon: 1, time: 1000, end: function () {
+                                            window.location.href = "doclist?page=" + currPage;//跳转链接
+                                        }
+                                    });
+                                    /*<![CDATA[*/
+                                    /*]]>*/
+                                } else {
+                                    layer.msg('取消认证过程出现错误，请稍后重试!', {icon: 1, time: 1000});
+                                }
+
+                            },
+
+                        });
+
+                        layer.close(index);
+                    }
+                });
+            },
+            //修改分组
+            modGroup: function (othis) {
+                var id = $(othis).parent('td').parent('tr').attr('id');
+                // var name = $(othis).parent('td').parent('tr').children('.second').attr('value');
+                layer.open({
+                    type: 2
+                    , title: '修改分组'
+                    , area: ['820px', '470px']
+                    , shade: 0.8
+                    , maxmin: true,
+                    /*<![CDATA[*/
+                    content: "doctor/grouplist?id=" + id
+                    /*]]>*/
+                });
+            }
+        };
+        //启用弹出层
+        $('.tanchuang').on('click', function () {
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+    });
 
 
-	</script>
+</script>
 </body>
 </html>

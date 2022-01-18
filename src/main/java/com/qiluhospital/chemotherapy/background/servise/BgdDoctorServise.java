@@ -8,11 +8,11 @@ import com.qiluhospital.chemotherapy.util.ResponseResult;
 import java.util.List;
 
 public interface BgdDoctorServise {
-
+    /**查询所有的医生 || 根据医生名字模糊查询*/
     List<DocView> getDocList(int pageIndex, int pageSize, String docName);
 
     long countAllDoc();
-
+    /**确定或取消医生认证*/
     ResponseResult authDoc(Long docId, String state);
 
     List<DocGroup> getAllDocGroup();

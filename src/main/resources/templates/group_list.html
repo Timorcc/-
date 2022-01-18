@@ -17,7 +17,7 @@
 		    <!--<a class="layui-btn search_btn search"><i class="layui-icon">&#xe615;</i>查询</a>-->
 		<!--</div>-->
 		<div class="layui-inline">
-			<button type="button" class="layui-btn layui-btn-normal tanchuang" id="add" data-method="addGroup"><i class="layui-icon">&#xe61f;</i>添加分组</button>
+			<button type="button" class="layui-btn tanchuang" id="add" data-method="addGroup"><i class="layui-icon">&#xe61f;</i>添加分组</button>
 		</div>
 		<!--<div class="layui-inline">-->
 			<!--<a class="layui-btn layui-btn-danger batchDel tanchuang" data-method="mulDel"><i class="layui-icon">&#xe640;</i> 批量删除</a>-->
@@ -27,8 +27,8 @@
 		<table class="layui-table">
 			<colgroup>
 				<col width="5%"/>
-				<col width="20%"/>
-				<col width="50%"/>
+				<col width="35%"/>
+				<col width="35%"/>
 				<col width="auto"/>
 			</colgroup>
 			<thead>
@@ -45,8 +45,8 @@
 				<td th:text="${docGroup.groupName}"></td>
 				<td th:text="${docGroup.description}"></td>
 				<td>
-					<a title="修改分组" data-method="editGroup" class="tanchuang"><i class="layui-icon">&#xe642;</i></a>
-					<a title="删除分组" data-method="delete" class="tanchuang"><i class="layui-icon">&#xe640;</i></a>
+					<a title="修改分组" data-method="editGroup" class="tanchuang"><i class="layui-icon" style="color: #009688;">&#xe642;</i></a>
+					<a title="删除分组" data-method="delete" class="tanchuang"><i class="layui-icon" style="color: #009688;">&#xe640;</i></a>
 				</td>
 			</tr>
 			</tbody>

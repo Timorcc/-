@@ -13,10 +13,9 @@ public class WebSocketConfig {
      */
 
 //    上线注释
-
+//
 //    @Bean
 //    public ServerEndpointExporter serverEndpointExporter() {
-//
 //        return new ServerEndpointExporter();
 //    }
 

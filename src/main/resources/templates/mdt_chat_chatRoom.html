@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <!--    <meta name="referrer" content="unsafe-url"/>-->
     <title>网络聊天室</title>
 </head>
 <style type="text/css">
@@ -26,13 +25,6 @@
     .talk_input {
         width: 580px;
         margin: 10px auto 0;
-    }
-
-    .whotalk {
-        width: 80px;
-        height: 30px;
-        float: left;
-        outline: none;
     }
 
     .talk_word {
@@ -99,17 +91,13 @@
         -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
         background-color: #89D7F7;
     }
-
-    /*set srcoll end*/
 </style>
 <body>
 <h4>
-    ===========
-    <img src=/static/img/code.jpg alt="">
-    ===========
+
     聊天室 roomId:
     <div th:text="${roomId}" id="chatRoomId"></div>
-    创建此聊天室的小秘书userId:
+    用户userId:
     <div th:text="${userId}" id="userId"></div>
     <hr>
     小秘书列表：
@@ -140,9 +128,9 @@
 </h4>
 <!--聊天室窗口-->
 <div class="talk_con">
-    <div style="margin-top: 10px">
-        <input type="button" value="退出聊天室" onclick="closeWs()"/><br>
-    </div>
+    <!--    <div style="margin-top: 10px">-->
+    <!--        <input type="button" value="退出聊天室" onclick="closeWs()"/><br>-->
+    <!--    </div>-->
     <div class="talk_show" id="words">
     </div>
     <div class="talk_input">
@@ -199,9 +187,9 @@
                 }
                 //图片
                 else {
-                    var str = '<img id="MyImage" src="" width="100px" height="100px">';
+                    var str = `<div class="btalk"><span><img id="${imageLoad1}" src="" width="100px" height="100px"></span></div>`;
                     Words.innerHTML = Words.innerHTML + str;
-                    document.getElementById('MyImage').src = imagePrefixUrl + imageLoad1;
+                    document.getElementById(imageLoad1).src = imagePrefixUrl + imageLoad1;
                     Words.scrollTop = Words.scrollHeight;
                 }
             }
@@ -215,9 +203,9 @@
                 }
                 //图片
                 else {
-                    var str = '<img id="MyImage" src="">';
+                    var str = `<div class="atalk"><span><img id="${imageLoad1}" src="" width="100px" height="100px"></span></div>`;
                     Words.innerHTML = Words.innerHTML + str;
-                    document.getElementById('MyImage').src = imagePrefixUrl + imageLoad1;
+                    document.getElementById(imageLoad1).src = imagePrefixUrl + imageLoad1;
                     Words.scrollTop = Words.scrollHeight;
                 }
             }
@@ -262,7 +250,7 @@
         console.log(str);
     }
 
-    console.log("1234")
+
 
     function UploadPictureTest() {
         var data = new FormData();
@@ -271,8 +259,7 @@
         console.log("-------------------")
         console.log($('#uploadPic'))
         console.log($('#uploadPic')[0])
-        console.log($('#uploadPic')[0].files[0])
-
+        console.log($('#uploadPic')[0].files[0]);/
         var file = $('#uploadPic')[0].files[0];
         var reader = new FileReader();//新建一个FileReader
         reader.readAsDataURL(file);
@@ -281,7 +268,6 @@
             var fileString = evt.target.result; // 读取文件内容
             // console.log("filestring")
             // console.log(fileString);
-
             var startNum = fileString.indexOf("base64,");
             startNum = startNum * 1 + 7;
             //去除前部格式信息（如果有需求）
@@ -295,9 +281,7 @@
             data.append("chatRoomId", roomName);
             data.append("userId", userId);
             upImg(data);
-
         }
-
         // data.append("file", $('#uploadPic')[0].files[0]);
         // data.append("fileName", $('#uploadPic')[0].files[0].name);
         // data.append("type", $('#uploadPic')[0].files[0].type);
@@ -305,7 +289,6 @@
         // data.append("userId", userId);
         // upImg(data);
     }
-
 
     function sendRequest(url, method, data, callback) {
         $.ajax({
@@ -324,7 +307,6 @@
     }
 
     function sendMultipartRequest(url, method, data, callback) {
-
         $.ajax({
             url: base + url,
             type: method,
@@ -343,14 +325,10 @@
                 console.log("error");
                 console.log(res);
             }
-
         })
-
     }
 
-
     function sendNormalRequest(url, method, data, callback) {
-
         $.ajax({
             url: base + url,
             type: method,
@@ -369,9 +347,7 @@
                 console.log("error");
                 console.log(res);
             }
-
         })
-
     }
 </script>
 </html>

@@ -53,7 +53,7 @@ public class WebSocketServer {
         for (Message message : messageList
         ) {
             //String history = message.getType()+message.getSender() + "-" + message.getUsername() + ":" + message.getContent();
-            //broadcast(roomName, history);
+            //broadcast(roomName, history);r,
             broadcast(roomName, message);
         }
     }

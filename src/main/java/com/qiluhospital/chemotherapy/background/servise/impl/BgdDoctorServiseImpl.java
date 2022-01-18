@@ -28,42 +28,48 @@ public class BgdDoctorServiseImpl implements BgdDoctorServise {
 
     @Autowired
     private DocGroupRepository docGroupRepository;
-
+    /**
+    * @describe 查询所有的医生 || 根据医生名字模糊查询
+    * @param    pageIndex,pageSize,docName
+    * @return   List<DocView>
+    *
+    */
     @Override
     public List<DocView> getDocList(int pageIndex, int pageSize, String docName) {
         List<DocView> docViewList = new ArrayList<>();
         try {
-            Sort sort = Sort.by(Sort.Direction.ASC,"docName");
-            Pageable pageable = PageRequest.of(pageIndex,pageSize,sort);
+            Sort sort = Sort.by(Sort.Direction.ASC, "docName");
+            Pageable pageable = PageRequest.of(pageIndex, pageSize, sort);
             Page<Doctor> doctors;
-            if(docName==null){
-                doctors  = doctorRepository.findAll(pageable);
-            }else {
-                doctors = doctorRepository.findAllByDocNameContaining(docName,pageable);
+            if (docName == null) {
+                doctors = doctorRepository.findAll(pageable);
+            } else {
+                doctors = doctorRepository.findAllByDocNameContaining(docName, pageable);
             }
-            for (Doctor doctor:doctors){
+            for (Doctor doctor : doctors) {
                 DocView docView = new DocView();
                 docView.setDocId(doctor.getId());
                 docView.setDocName(doctor.getDocName());
                 docView.setIdeNum(doctor.getIdeNum());
                 docView.setProfNum(doctor.getProfNum());
                 docView.setTelNum(doctor.getTelNum());
-                String auth = "未确认";
-                if (doctor.getAuthenticity()){
-                    auth = "已确认";
+                String auth = "未认证";
+                if (doctor.getAuthenticity()) {
+                    auth = "已认证";
                 }
                 docView.setAuthenticity(auth);
                 String type = "护士";
-                if (doctor.getType().equals("doctor")){
+                if (doctor.getType().equals("doctor")) {
                     type = "医生";
                 }
                 docView.setType(type);
+                //查医生所属的组名
                 DocGroup docGroup = docGroupRepository.findOneById(doctor.getGroupId());
                 docView.setGroupName(docGroup.getGroupName());
                 docViewList.add(docView);
             }
             return docViewList;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.toString());
             return docViewList;
         }
@@ -73,26 +79,32 @@ public class BgdDoctorServiseImpl implements BgdDoctorServise {
     public long countAllDoc() {
         try {
             return doctorRepository.count();
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.toString());
             return 0;
         }
 
     }
 
+    /**
+     * @describe 确定或取消医生认证
+     * @param    docId,state
+     * @return   ResponseResult
+     *
+     */
     @Override
     public ResponseResult authDoc(Long docId, String state) {
         try {
             Doctor doctor = doctorRepository.findOneById(docId);
-            if(state.equals("yes")){
+            if (state.equals("yes")) {
                 doctor.setAuthenticity(true);
             }
-            if(state.equals("cancel")){
+            if (state.equals("cancel")) {
                 doctor.setAuthenticity(false);
             }
             doctorRepository.save(doctor);
             return ResponseResultUtils.success();
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.toString());
             return ResponseResultUtils.error(e);
         }
@@ -102,7 +114,7 @@ public class BgdDoctorServiseImpl implements BgdDoctorServise {
     public List<DocGroup> getAllDocGroup() {
         try {
             return docGroupRepository.findAll();
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.toString());
             return null;
         }
@@ -112,7 +124,7 @@ public class BgdDoctorServiseImpl implements BgdDoctorServise {
     public Doctor getDocById(Long docId) {
         try {
             return doctorRepository.findOneById(docId);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.toString());
             return null;
         }
@@ -126,7 +138,7 @@ public class BgdDoctorServiseImpl implements BgdDoctorServise {
             doctor.setType(type);
             doctorRepository.save(doctor);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.toString());
             return false;
         }
@@ -138,7 +150,7 @@ public class BgdDoctorServiseImpl implements BgdDoctorServise {
             DocGroup docGroup = docGroupRepository.findOneById(docGroupId);
             docGroupRepository.delete(docGroup);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.toString());
             return false;
         }
@@ -148,7 +160,7 @@ public class BgdDoctorServiseImpl implements BgdDoctorServise {
     public DocGroup getDocGroupById(Long docGroupId) {
         try {
             return docGroupRepository.findOneById(docGroupId);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.toString());
             return null;
         }
@@ -162,7 +174,7 @@ public class BgdDoctorServiseImpl implements BgdDoctorServise {
             docGroup.setDescription(description);
             docGroupRepository.save(docGroup);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.toString());
             return false;
         }
@@ -176,7 +188,7 @@ public class BgdDoctorServiseImpl implements BgdDoctorServise {
             docGroup.setDescription(description);
             docGroupRepository.save(docGroup);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.toString());
             return false;
         }
@@ -186,7 +198,7 @@ public class BgdDoctorServiseImpl implements BgdDoctorServise {
     public long countByDocName(String docName) {
         try {
             return doctorRepository.countByDocNameContaining(docName);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.toString());
             return 0;
         }

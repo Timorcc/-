@@ -34,7 +34,6 @@ public class ChatRoomController {
 
     @GetMapping("mdt/chatRoom/add")
     public String addChatRoom(Model model) {
-
         List<Department> departmentViews = departmentService.findAll();
         model.addAttribute("departmentViews", departmentViews);
         return "mdt_chat_add";

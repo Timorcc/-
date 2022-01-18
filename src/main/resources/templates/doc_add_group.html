@@ -20,7 +20,7 @@
 			<div class="layui-form-item">
 				<label class="layui-form-label">医生姓名</label>
 				<div class="layui-input-block">
-					<input type="text" name="docName" readonly="readonly"  class="layui-input" th:value="${doctor.getDocName()}"/>
+					<input type="text" name="docName" readonly="true" style="background:#dddddd"  class="layui-input" th:value="${doctor.getDocName()}"/>
 					<input type="text" th:value="${doctor.getId()}" style="display: none" name="docId"/>
 				</div>
 			</div>
